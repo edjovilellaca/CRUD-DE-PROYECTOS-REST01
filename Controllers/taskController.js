@@ -1,76 +1,122 @@
-let tasks = [
+import {v4 as uuidv4} from 'uuid';
+let myuuid = uuidv4();
+
+let projects = [
     {
-        id: 1,
-        title:"Tarea1",
-        description: "Descripción de la Tarea 1",
+        id: "5f0dba4a-e8d3-4a63-9cf1-741c53f6be72",
+        name:"Nuevo Sistema de Gestión",
+        description: "Descripción proyecto 1",
+        startDate: "2024-09-01",
+        endDate: "2025-09-01",
+        status: "En progreso",
+        teamMembers: ["Carlos Pérez", "Ana Gómez", "Luis Martínez"],
+        budget: 50000
     },
 
     {
-        id: 2,
-        title:"Tarea2",
-        description: "Descripción de la Tarea 2",
+        id: "2f0aaa4a-d8d3-4b63-9af1-741b53f6cc88",
+        name:"Nuevo Sistema de luz",
+        description: "Descripción proyecto 2",
+        startDate: "2024-10-01",
+        endDate: "2026-10-01",
+        status: "Pre-Finalizado",
+        teamMembers: ["Antonio Pérez", "Luis Gómez", "Jorge Martínez"],
+        budget: 60000
     },
 
     {
-        id: 3,
-        title:"Tarea3",
-        description: "Descripción de la Tarea 3",
+        id: "9d1bba4a-d8d3-7b63-0ee1-333a44f6bb99",
+        name:"Nuevo Sistema de almacenamiento",
+        description: "Descripción proyecto 3",
+        startDate: "2024-11-01",
+        endDate: "2027-11-01",
+        status: "Finalizado",
+        teamMembers: ["Jesus Lopez", "Joaquin Arjona", "Carlos Cabral"],
+        budget: 900000
     }
 ];
 
-function getAllTasks(){
-    return tasks;
+
+function getAllProjects(){
+    return projects;
 }
 
-function createTask(title, description){
+function createProjects(name, description,startDate, endDate, status, teamMembers, budget){
 
-    if(!title || !description){
+    if(!name 
+        || !description
+        || !startDate
+        || !endDate
+        || !status
+        || !teamMembers
+        || !budget){
         return null;
     }
 
-    const newTask = {
-        id: tasks[tasks.length-1].id + 1,
-        title, 
-        description
+    const newProject = {
+        id,
+        name, 
+        description,
+        startDate,
+        endDate,
+        status,
+        teamMembers,
+        budget
     };
 
-    tasks.push(newTask);
-    return tasks;
+    projects.push(newProject);
+    return projects;
 }
 
-function deleteTask(id){
-    const index = tasks.findIndex(task => task.id === parseInt(id));
+function deleteProjects(id){
+    const index = projects.findIndex(project => project.id === (id));
 
     if(index == -1){
         return null;
     }
 
-    tasks.splice(index, 1);
-    return tasks;
+    projects.splice(index, 1);
+    return projects;
 }
 
-function updateTask(id, title, description){
-    const idTask = tasks.findIndex(task => task.id === id);
+function updateProjects(id,name, description,startDate, endDate, status, teamMembers, budget){
+    const idProject = projects.findIndex(project => project.id === id);
 
-    if(idTask == -1){
+    if(idProject == -1){
         return null;
     }
 
-    if(title){
-        tasks[idTask].title = title;
+    if(name){
+        projects[idProject].name = name;
     }
     if(description){
-        tasks[idTask].description = description
+        projects[idProject].description = description
     }
-
-    return tasks;
+    if(startDate){
+        projects[idProject].startDate = startDate
+    }
+    if(endDate){
+        projects[idProject].endDate = endDate
+    }
+    if(status){
+        projects[idProject].status = status
+    }
+    if(teamMembers){
+        projects[idProject].teamMembers = teamMembers
+    }
+    if(budget){
+        projects[idProject].budget = budget
+    }
+    
+   
+    return projects;
 }
 
-function getTask(id) {
-    const task = tasks.find(task => task.id === parseInt(id)); 
-    return task;
+function getProjects(id) {
+    const project = projects.find(project => project.id === (id)); 
+    return project;
 }
 
 module.exports = {
-    getAllTasks, createTask, deleteTask, updateTask, getTask
+    getAllProjects, createProjects, deleteProjects, updateProjects, getProjects
 }

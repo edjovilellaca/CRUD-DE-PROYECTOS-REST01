@@ -2,55 +2,63 @@ const express = require('express');
 const router = express.Router();
 const taskController = require('../Controllers/taskController');
 
-router.get('/', (req, res) => {
-    const {id} = req.body;
-    let task;
-    if(id){
-        task = taskController.getTask(id);
-        if(!task){
-            return res.status(404).json({"error": 'Tarea inexsistente'});
-        }
+router.get('/projects', (req, res) => {    
+    const projects = taskController.getAllProjects();
+
+    if(projects.length > 0){
+        res.status(200).json(projects);
     }else{
-        task = taskController.getAllTasks();
+        res.status(404).json({code: 404, message: "Projects not found"});
     }
     
-    if(task.length > 0){
-        res.status(200).json(task);
-    }else{
-        res.status(404).json({code: 404, message: "Tasks not found"});
-    }
 });
 
-router.post('/', (req, res) => {
-    const {title, description} = req.body;
-    const newTask = taskController.createTask(title, description);
+router.get('/projects/:id', (req, res) => {
+    const {id} = req.params;
+    const projects = taskController.getProjectsById(id);
 
-    if(!newTask){
+    if(projects.length > 0){
+        res.status(200).json(projects);
+    }else{
+        res.status(404).json({code: 404, message: "Projects not found"});
+    }
+    
+});
+
+router.post('/projects', (req, res) => {
+    const {name, description, startDate, endDate, status, teamMembers, budget} = req.body;
+    const newProject = 
+    taskController.createProject(name, description, startDate, endDate, status, teamMembers, budget);
+
+
+    if(!newProject){
         return res.status(412).json({"error": 'Datos insuficientes'});
     }
 
-    res.status(200).json(newTask);
+    res.status(200).json(newProject);
 });
 
-router.delete('/', (req, res) => {
+router.delete('/projects/:id', (req, res) => {
     const {id} = req.body;
-    const newTask = taskController.deleteTask(id);
+    const newProject = taskController.deleteProject(id);
 
-    if(!newTask){
-        return res.status(404).json({"error": 'Tarea inexsistente'});
+    if(!newProject){
+        return res.status(404).json({"error": 'Proyecto inexsistente'});
     }
 
-    res.status(200).json(newTask);
+    res.status(200).json(newProject);
 });
 
 router.patch('/', (req, res) => {
-    const {id, title, description} = req.body;
-    const newTask = taskController.updateTask(id, title, description);
-    if(!newTask){
-        return res.status(404).json({"error": 'Tarea inexsistente'});
+    const {name, description, startDate, endDate, status, teamMembers, budget} = req.body;
+    const newProject = 
+    taskController.updateProject(name, description, startDate, endDate, status, teamMembers, budget);
+
+    if(!newProject){
+        return res.status(404).json({"error": 'Proyecto inexsistente'});
     }
 
-    res.status(200).json(newTask);
+    res.status(200).json(newProject);
 });
 
 module.exports = router;
